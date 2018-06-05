@@ -5,7 +5,7 @@ export default class ComponentBottom extends React.Component {
 		return (
 				<div>
 					这是版权信息
-				</div>	
+				</div>
 			)
 	}
 }

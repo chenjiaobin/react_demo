@@ -1,6 +1,8 @@
 var webpack = require('webpack')
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path')
+// 打包html
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -25,7 +27,7 @@ module.exports = {
         exclude: /node_modules/,//标示不编译node_modules文件夹下面的内容
         query: {//具体的编译的类型，
             compact: true,//表示不压缩
-            presets: ['es2015', 'react']//我们需要编译的是es6和react
+            presets: ['es2015', 'react', 'stage-0']//我们需要编译的是es6和react,stage-0这个插件是为了解决静态属性static
         }
       }
     ]
@@ -35,6 +37,7 @@ module.exports = {
   		title: "This is the result",
         filename: "./index.html",
         template: "./index.html"
-  	})
-  	]
+  	}),
+    new OpenBrowserPlugin({ url: 'http://localhost:8080' })
+  ]
 }

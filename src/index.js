@@ -10,9 +10,9 @@ class Index extends React.Component {
     return (
     		<div>
         	<ComponentHeader name="我是阿布"/>
-        	<ComponentBody/>
+        	<ComponentBody userId={123456} sex="male"/>
         	<ComponentBottom/>
-    		</div>	
+    		</div>
       )
   }
 }
