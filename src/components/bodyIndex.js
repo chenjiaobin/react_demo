@@ -5,6 +5,10 @@ import BodyChild from './bodyChild.js'
 // 这个是es6使用mixin的时候才会用到的
 import ReactMixin from 'react-mixin'
 import mixinLog from './mixin'
+import { Link, Switch, Route } from 'react-router-dom'
+
+import Home from './home'
+import RouterTest from './goods'
 
 export default class ComponentBody extends React.Component {
 
@@ -91,6 +95,14 @@ export default class ComponentBody extends React.Component {
 					<p id="who">通过ref改变我比原生的js改变我要好</p>
 					<p ref='who'>ref使用</p>
 					<button onClick={this.refTest.bind(this)}>点击测试ref</button>
+					<p className="footerCss.all">我是全局样式</p>
+					<div>
+						<h1>路由测试</h1>
+						<Switch>
+							<Route component={Home} exact path='/'></Route>
+							<Route component={RouterTest} path="/goods/:id"></Route>
+						</Switch>
+					</div>
 				</div>
 			)
 	}

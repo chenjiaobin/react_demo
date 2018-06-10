@@ -17,7 +17,4 @@ class Index extends React.Component {
   }
 }
 
-ReactDom.render(
-    <Index/>,
-    document.getElementById('app')
-  )
+export default Index
