@@ -10,6 +10,7 @@ import { Link, Switch, Route } from 'react-router-dom'
 import Home from './home'
 import RouterTest from './goods'
 
+
 export default class ComponentBody extends React.Component {
 
 	// 在子类继承中是没有这个getInitialState的钩子的，在React.createClass就有
@@ -21,7 +22,8 @@ export default class ComponentBody extends React.Component {
 		// 在这种继承的方式创建组件有this.state代替getInitialState
 		this.state = {
 			name: '刘亦菲',
-			age: 0
+			age: 0,
+			arr: [{name:'陈',age:2},{name:'小龙女',age:3}]
 		}
 		this.changeName = this.changeName.bind(this)
 	}
@@ -42,8 +44,13 @@ export default class ComponentBody extends React.Component {
 
 	// onClick事件的测试
 	changeName () {
-		this.setState({name: '小龙女'})
-
+		// this.setState({name: '小龙女'})
+		console.log('sedfsad')
+		this.setState((pre, prop) => {
+			console.log('酒店开发接口对接')
+			console.log(pre)
+			console.log(prop)
+		})
 		// 调用mixin的方法
 		mixinLog.log()
 	}
@@ -90,7 +97,7 @@ export default class ComponentBody extends React.Component {
 					<input type="button" value="提交" onClick={this.changeName.bind(this)}/>
 					<input type="button" value="参数传递" onClick={this.receiveProp.bind(this,'降龙十八掌')}/>
 					{/*通过...this.props来将父组件传过来的所有参数传递给子组件*/}
-					<BodyChild ref='childRef' {...this.props} handlerChangeAge={this.handlerChangeAge.bind(this)}/>
+					<BodyChild ref='childRef' {...this.props} handlerChangeAge={this.handlerChangeAge.bind(this)}  arr={this.state.arr}/>
 
 					<p id="who">通过ref改变我比原生的js改变我要好</p>
 					<p ref='who'>ref使用</p>

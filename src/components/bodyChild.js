@@ -42,6 +42,14 @@ export default class BodyChild extends React.Component {
 				{/*这里我安装了babel-plugin-react-html-attrs插件所以直接可以使用class这个来添加样式，如果没有这个插件那么需要将class改成className*/}
 				{/*通过es6的字符串模板拼接两个class*/}
 				<p class={`${footerCss.minFooter} ${footerCss.all}`}>这个样式是来自外部文件</p>
+				<ul>
+					{
+						this.props.arr.map(item => (
+							<li key={item.age}>{item.name}</li>
+						))
+					}
+				</ul>
+				<p>看电视剧纺纱机快递费金卡技术开发的金卡就是 {this.props.arr[0].name}</p>
 			</div>
 		)
 	}
