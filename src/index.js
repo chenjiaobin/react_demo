@@ -1,8 +1,8 @@
 var React = require('react')
 var ReactDom = require ('react-dom')
-import ComponentHeader from  './page/test/header.js'
-import ComponentBody from  './page/test/bodyIndex.js'
-import ComponentBottom from  './page/test/footer.js'
+import ComponentHeader from  './page/test/components/header.js'
+import ComponentBody from  './page/test/components/bodyIndex.js'
+import ComponentBottom from  './page/test/components/footer.js'
 import { BrowserRouter} from 'react-router-dom'
 
 class Index extends React.Component {

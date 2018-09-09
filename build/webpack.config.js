@@ -1,19 +1,21 @@
-var webpack = require('webpack')
-var path = require('path')
+const webpack = require('webpack')
+const path = require('path')
 // 打包html
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 // 自动打开浏览器
-var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 // 单独打包此出css文件
-var ExtractTextPlugin  = require('extract-text-webpack-plugin')
+const ExtractTextPlugin  = require('extract-text-webpack-plugin')
+const config = require('./config.js')
 
-module.exports = {
+ const webpackConfig = {
   mode: 'development',
-  entry: './src/index.js',
+  // entry: './src/index.js',
+  entry: config.multiPage.open ? config.multiPage.entries : './src/index.js',
   output: {
     path: path.resolve('./dist'),
-    filename: 'bundle.js',
-    // publicPath: '/'
+    filename: '[name].js',
+    publicPath: '/'
   },
   devtool: 'eval-source-map',
   devServer: {
@@ -47,12 +49,44 @@ module.exports = {
     ]
   },
   plugins: [
-  	new HtmlWebpackPlugin({
-  		title: "This is the result",
-        filename: "./index.html",
-        template: "./index.html"
-      }),
+    // 在下面已经添加了多页面打包
+  	// new HtmlWebpackPlugin({
+    //     filename: "index.html",
+    //     template: "C:/Users/kevin/Desktop/react_demo/src/page/test/index.html"
+    //   }),
     // 因为配置文件已经放在了build这个文件夹，webpack打包完后会自动打开浏览器
-    // new OpenBrowserPlugin({ url: 'http://localhost:8080' }),
+    // new OpenBrowserPlugin({ url: 'http://localhost:8080/test.html' }),
   ]
 }
+
+if (config.multiPage.open) {
+  config.multiPage.templates.forEach(item => {
+    const conf = {
+      filename: 'index.html',
+      template: item.path,
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      },
+      chunks: [item.name, 'manifest', 'vendor'],
+      chunksSortMode: 'dependency'
+    }
+    webpackConfig.plugins.push(new HtmlWebpackPlugin(conf))
+  })
+}
+ else {
+  webpackConfig.plugins.push(new HtmlWebpackPlugin({
+    filename: './index.html',
+      template: './index.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      },
+      chunksSortMode: 'dependency'
+  }))
+}
+module.exports = webpackConfig
