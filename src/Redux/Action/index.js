@@ -1,12 +1,16 @@
 export const Increment = 'increment'
 export const Decrement = 'Decrement'
 
-export const increment = (counterCaption) => ({
-    type: Increment,
-    counterCaption
-})
+export const increment = (counterCaption) => {
+    return {
+        type: Increment,
+        counterCaption
+    }
+}
 
-export const decrement = (counterCaption) => ({
-    type: Decrement,
-    counterCaption
-})
+export const decrement = (counterCaption) => {
+    return {
+        type: Increment,
+        counterCaption
+    }
+}
