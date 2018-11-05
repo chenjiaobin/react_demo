@@ -32,9 +32,14 @@ export default class ComponentBody extends React.Component {
 
 	// 注意：使用这个static的时候需要安装babel-preset-stage-0插件
 	// 如果父组件没有传递指定的值过来，我们可以通过这个方式设置，默认值
-	static defaultProps = {
-		country: '这是默认值'
-	}
+// es6类中只允许定义方法并不允许定义类属性，所以像这种定义默认值和类型检查现在都是放在后面
+	// static defaultProps = {
+	// 	country: '这是默认值'
+	// }
+
+	// static propTypes  = {
+	// 	userId: PropTypes.number.isRequired
+	// }
 
 	componentWillMount() {
 		console.log('componentWillMount');
@@ -141,6 +146,10 @@ export default class ComponentBody extends React.Component {
 	}
 }
 
+
+	ComponentBody.defaultProps = {
+		country: '这是默认值'
+	}
 // react在15.5.0版本以后就见propType移除，被独立成一个新的包prop-type,记得安装prop-types,并在组件中import进来
 ComponentBody.propTypes  = {
 	userId: PropTypes.number.isRequired
