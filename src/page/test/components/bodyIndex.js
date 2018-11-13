@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDom from 'react-dom'
 import BodyChild from './bodyChild.js'
+import Reftext from './reftext.js'
 // 这个是es6使用mixin的时候才会用到的
 import ReactMixin from 'react-mixin'
 import mixinLog from './mixin'
@@ -28,6 +29,17 @@ export default class ComponentBody extends React.Component {
 		}
 		this.changeName = this.changeName.bind(this)
 		this.test = this.test.bind(this)
+		// createRef试用
+		this.myref = React.createRef()
+		// 回调ref的试用
+		this.textInput = null
+		this.setTextInputRef = element => {
+			this.textInput = element
+		}
+		this.fromC = null
+		this.fromChild = element => {
+			this.fromC = element
+		}
 	}
 
 	// 注意：使用这个static的时候需要安装babel-preset-stage-0插件
@@ -83,6 +95,7 @@ export default class ComponentBody extends React.Component {
 	}
 
 	// ref的威力
+	// 注意：this.refs.dom这种获取元素后面版本可以能会被移除，建议使用回调函数
 	refTest () {
 		// 原生js改变样式
 		var nat = document.getElementById('who')
@@ -108,6 +121,22 @@ export default class ComponentBody extends React.Component {
 		return 2 + 2
 	}
 
+	// 16.3版本引入，新版本还是推荐使用回调形式的refs
+	// 当 ref 属性被用于一个普通的 HTML 元素时，React.createRef() 将接收底层 DOM 元素作为它的 current 属性以创建 ref
+	// 当 ref 属性被用于一个自定义类组件时，ref 对象将接收该组件已挂载的实例作为它的 current
+	createrefTest () {
+		console.log(this.myref.current)
+	}
+
+	// 回调ref的测试，这个是最推荐使用的
+	createrefTest_2 () {
+		console.log(this.textInput)
+	}
+
+	createrefTest_3 () {
+		console.log(this.fromC)
+	}
+
 	render () {
 		var userName = '张三丰&nbsp;后裔'
 
@@ -115,6 +144,15 @@ export default class ComponentBody extends React.Component {
 				<div>
 					{/*jsx的注释写法，下面这个danger是为了将userName的&nbsp转换成空格，这个要防止代码注入的问题。也可以通过将空格转换成unicode来进行显示*/}
 					这是<p dangerouslySetInnerHTML = {{__html:userName}}></p>
+
+					<p ref={this.myref}>测试通过16.6.3引入的createRef获取ref</p>
+					<input type="button" value="createRef测试" onClick={this.createrefTest.bind(this)}/>
+
+					<p ref={this.setTextInputRef}>回调ref的使用</p>
+					<input type="button" value="回调ref测试" onClick={this.createrefTest_2.bind(this)}/>
+					<Reftext refInput={this.fromChild}></Reftext>
+					<input type="button" value="回调ref测试,父组件获取子组件dom节点" onClick={this.createrefTest_3.bind(this)}/>
+
 					{/*直接在花口号里面写函数 */}
 					<div>{this.test()}</div>
 					<p>{this.state.name}</p>
