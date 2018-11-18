@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import store from '@/Redux/Store/store'
 import { Provider } from 'react-redux'
 import ControlPannel from './controlPannel'
+import RouterTest from './routerTest'
+import RouterTest2 from './routerTest2'
 
 // 注意：组件必须export出来，在其他地方才可以使用
 export default class ComponentHeader extends React.Component {
@@ -17,6 +19,8 @@ export default class ComponentHeader extends React.Component {
 					<li><Link to="/goods/123">测试</Link></li>
 				</ul>
 			<ControlPannel></ControlPannel>
+			<RouterTest></RouterTest>
+			<RouterTest2></RouterTest2>
 			</div>
 			</Provider>
 		)

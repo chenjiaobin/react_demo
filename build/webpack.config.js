@@ -33,19 +33,24 @@ const config = require('./config.js')
   module: {
     rules: [
       {
-        test: /\.js?$/,//表示要编译的文件的类型，这里要编译的是js文件
+        test: /\.(js|jsx)$/,//表示要编译的文件的类型，这里要编译的是js文件
         loader: 'babel-loader',//装载的哪些模块
         exclude: /node_modules/,//标示不编译node_modules文件夹下面的内容
         query: {//具体的编译的类型，
             compact: true,//表示不压缩
             presets: ['es2015', 'react', 'stage-0'],//我们需要编译的是es6和react,stage-0这个插件是为了解决静态属性static
-            plugins: ['react-html-attrs'] // 这个是为了能在react组件中使用class添加样式而不必须使用className
+            plugins: [
+              ["import", {libraryName: "antd", style: "css"}],
+              'react-html-attrs',// 这个是为了能在react组件中使用class添加样式而不必须使用className
+            ] 
         }
       },
       {
-        test: /\.css?$/,
+        test: /\.css$/,
+        // exclude: [/node_modules/],
         loader: 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-      }
+        // loader: 'style-loader!css-loader'
+      },
     ]
   },
   plugins: [

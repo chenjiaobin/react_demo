@@ -4,6 +4,8 @@ import ComponentHeader from  './components/header.js'
 import ComponentBody from  './components/bodyIndex.js'
 import ComponentBottom from  './components/footer.js'
 import { BrowserRouter} from 'react-router-dom'
+import { DatePicker, Switch } from 'antd'
+// import 'antd/dist/antd.css'
 
 class Index extends React.Component {
 
@@ -14,6 +16,8 @@ class Index extends React.Component {
         	<ComponentHeader name="我是阿布"/>
         	<ComponentBody userId={123456} sex="male"/>
         	<ComponentBottom/>
+					<DatePicker />
+					<Switch defaultChecked={false} />
     		</div>
 			</BrowserRouter>
       )
