@@ -10,7 +10,7 @@ import { Link, Switch, Route } from 'react-router-dom'
 
 import Home from './home'
 import RouterTest from './goods'
-
+import footerCss from '@/css/footer.css'
 
 export default class ComponentBody extends React.Component {
 
@@ -171,9 +171,10 @@ export default class ComponentBody extends React.Component {
 					<button onClick={this.refTest.bind(this)}>点击测试ref</button>
 					<div>{this.state.num}</div>
 					<button onClick={this.add.bind(this)}>测试setState</button>
-					<p className="footerCss.all">我是全局样式</p>
+					<p className={footerCss.minFooter}>我是全局样式</p>
 					<div>
-						<h1>路由测试</h1>
+						{/* 这个是因为我在footer.css添加了全局样式global，所以可以直接这样用，因为css-module不会去改变样式的名字，如果不加global默认是local，那么只能按照上面那种方式去使用 */}
+						<h1 className="allArea">路由测试</h1>
 						<Switch>
 							<Route component={Home} exact path='/'></Route>
 							<Route component={RouterTest} path="/goods/:id"></Route>

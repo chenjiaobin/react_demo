@@ -6,3 +6,7 @@
 .all {
 	color: orange
 }
+
+:global(.allArea) {
+	background: gray;
+}

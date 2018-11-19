@@ -7,6 +7,7 @@ const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 // 单独打包此出css文件
 const ExtractTextPlugin  = require('extract-text-webpack-plugin')
 const config = require('./config.js')
+const autoprefixer = require('autoprefixer')
 
  const webpackConfig = {
   mode: 'development',
@@ -47,10 +48,61 @@ const config = require('./config.js')
       },
       {
         test: /\.css$/,
-        // exclude: [/node_modules/],
-        loader: 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-        // loader: 'style-loader!css-loader'
+        exclude:[/node_modules/],
+        use: [
+          require.resolve('style-loader'), {
+            loader: require.resolve('css-loader'),
+            options: {
+              importLoaders: 1,
+              modules: true, // 新增对css modules的支持
+              localIdentName: '[name]__[local]__[hash:base64:5]'
+            }
+          }, {
+            loader: require.resolve('postcss-loader'),
+            options: {
+              ident: 'postcss',
+              plugins: () => [
+                require('postcss-flexbugs-fixes'),
+                autoprefixer({
+                  browsers: [
+                    '>1%', 'last 4 versions', 'Firefox ESR', 'not ie < 9', // React doesn't support IE8 anyway
+                  ],
+                  flexbox: 'no-2009'
+                })
+              ]
+            }
+          }
+        ]
       },
+      // 下面这个配置css是专门为了antd的，不使用css-module,因为在css-module的情况下antd不工作
+      {
+        test: /\.css$/,
+        exclude:[/src/],
+        use: [
+          require.resolve('style-loader'), {
+            loader: require.resolve('css-loader'),
+            options: {
+              importLoaders: 1
+              // 注：这里不要设置好module:true
+            }
+          }, {
+            loader: require.resolve('postcss-loader'),
+            options: {
+              ident: 'postcss',
+              // postcss-flexbugs-fixes是为了修复flex布局bug的插件，autoprefixer则是自动添加浏览器前缀的插件，press是类似sass语法的插件
+              plugins: () => [
+                require('postcss-flexbugs-fixes'),
+                autoprefixer({
+                  browsers: [
+                    '>1%', 'last 4 versions', 'Firefox ESR', 'not ie < 9', // React doesn't support IE8 anyway
+                  ],
+                  flexbox: 'no-2009'
+                })
+              ]
+            }
+          }
+        ]
+      }
     ]
   },
   plugins: [
