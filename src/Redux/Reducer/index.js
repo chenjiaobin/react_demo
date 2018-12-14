@@ -15,7 +15,7 @@ export default (state, action) => {
             // 也可以通过下面这种写法，es6的对象展开符
             return {...state, [counterCaption]:state[counterCaption]+1}
         case Decrement:
-            return {...state, [counterCaption]:state[counterCaption]+1}
+            return {...state, [counterCaption]:state[counterCaption]-1}
         default:
             return state
     }

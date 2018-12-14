@@ -43,7 +43,6 @@ console.log(myPath2); //D:\myProgram\test\img\so
 console.log(myPath3); //D:\img\so<br> 
 console.log(myPath4); //D:\myProgram\test\img\so
 ```
-=======
 ## React-redux
 1. react-redux主要工作的两件事就是a.将store传入根组件的context,以便子组件可以用;b通过subscribe订阅store的变化
 2. provider接收从redux而来的store,以便传递给子组件使用
@@ -76,4 +75,66 @@ class IgnoreFirstChild extends React.Component {
 }
 ```
 当我们想要父组件嵌套的子组件只有一个的时候我们可以通过`React.Children.only(this.props.children)()`来渲染，这样只会返回一个child。如果不止一个child，它就会抛出错误
+## 生命周期
+注：由于未来采用**异步**渲染机制，所以即将在17版本中去掉的生命周期钩子函数
+* componentWillMount
+* componentWillRecieveProps
+* componentWIllUpdate
+
+### 新增两个
+* static getDerivedStateFromProps
+会在初始化和update触发，用于替换componentWillReceiveProps,可以用来控制props更新state的过程，它返回一个对象便是新的state,如果不需要更新，返回null
+* getSnapshotBeforeUpdate 用于替换componentWillUpdate,改函数会在update后DOM更新前被调用，用于读取最新的DOM数据，返回值将作为componentDidUpdate的第三个参数
+```
+class A extends React.Component {
+  // 用于初始化 state
+  constructor() {}
+  // 用于替换 `componentWillReceiveProps` ，该函数会在初始化和 `update` 时被调用
+  // 因为该函数是静态函数，所以取不到 `this`
+  // 如果需要对比 `prevProps` 需要单独在 `state` 中维护
+  static getDerivedStateFromProps(nextProps, prevState) {}
+  // 判断是否需要更新组件，多用于组件性能优化
+  shouldComponentUpdate(nextProps, nextState) {}
+  // 组件挂载后调用
+  // 可以在该函数中进行请求或者订阅
+  componentDidMount() {}
+  // 用于获得最新的 DOM 数据
+  getSnapshotBeforeUpdate() {}
+  // 组件即将销毁
+  // 可以在此处移除订阅，定时器等等
+  componentWillUnmount() {}
+  // 组件销毁后调用
+  componentDidUnMount() {}
+  // 组件更新后调用
+  componentDidUpdate() {}
+  // 渲染组件函数
+  render() {}
+  // 以下函数不建议使用
+  UNSAFE_componentWillMount() {}
+  UNSAFE_componentWillUpdate(nextProps, nextState) {}
+  UNSAFE_componentWillReceiveProps(nextProps) {}
+}
+```
+## 生命周期执行顺序
+**首次渲染**
+1. father constructor
+2. father getDerivedStateFromProps
+3. father render
+4. children constructor
+5. children getDerivedStateFromProps
+6. children render
+7. children componentDidMount
+8. father componentDidMount
+
+**父组件数据修改触发重渲染**
+1. father getDerivedStateFromProps
+2. father shouldComponentUpdate
+3. father render
+4. children getDerivedStateFromProps
+5. children shouldComponentUpdate
+6. children render
+7. children getSnapshotBeforeUpdate
+8. father getSnapshotBeforeUpdate
+9. children componentDidUpdate, snapshot: 1
+10. father componentDidUpdate, snapshot: 1
 

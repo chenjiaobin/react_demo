@@ -10,7 +10,7 @@ export const increment = (counterCaption) => {
 
 export const decrement = (counterCaption) => {
     return {
-        type: Increment,
+        type: Decrement,
         counterCaption
     }
 }

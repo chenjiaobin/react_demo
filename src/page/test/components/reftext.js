@@ -10,6 +10,8 @@ const ThemeContextDy = React.createContext({
   toggleTheme: () => {}
 })
 
+import {ThemeContextTP} from './contextTP'
+
 export default class RefText extends Component {
   constructor(){
     super()
@@ -49,6 +51,10 @@ export default class RefText extends Component {
             )}
           </ThemeContextDy.Consumer>
         </ThemeContextDy.Provider>
+
+        <ThemeContextTP.Provider value="orange">
+          <ContextDemo></ContextDemo>
+        </ThemeContextTP.Provider>
       </div>
     )
   }
