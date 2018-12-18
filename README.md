@@ -138,3 +138,92 @@ class A extends React.Component {
 9. children componentDidUpdate, snapshot: 1
 10. father componentDidUpdate, snapshot: 1
 
+## 按需加载react-router
+> 第一种
+1. 第一步: 安装 babel-plugin-syntax-dynamic-import,并在.babelrc中配置
+2. 第二步: 安装 react-loadable
+3. 第三步: 开始使用
+
+```
+import React from 'react';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
+const history = createHistory();
+
+import App from 'containers';
+
+// 按路由拆分代码
+import Loadable from 'react-loadable';
+const MyLoadingComponent = ({ isLoading, error }) => {
+    // Handle the loading state
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    // Handle the error state
+    else if (error) {
+        return <div>Sorry, there was a problem loading the page.</div>;
+    }
+    else {
+        return null;
+    }
+};
+const AsyncHome = Loadable({
+    loader: () => import('../containers/Home'),
+    loading: MyLoadingComponent
+});
+const AsyncCity = Loadable({
+    loader: () => import('../containers/City'),
+    loading: MyLoadingComponent
+});
+const AsyncDetail = Loadable({
+    loader: () => import('../containers/Detail'),
+    loading: MyLoadingComponent
+});
+const AsyncSearch = Loadable({
+    loader: () => import('../containers/Search'),
+    loading: MyLoadingComponent
+});
+const AsyncUser = Loadable({
+    loader: () => import('../containers/User'),
+    loading: MyLoadingComponent
+});
+const AsyncNotFound = Loadable({
+    loader: () => import('../containers/404'),
+    loading: MyLoadingComponent
+});
+
+// 路由配置
+class RouteMap extends React.Component {
+    render() {
+        return (
+            <Router history={history}>
+                <App>
+                    <Switch>
+                        <Route path="/" exact component={AsyncHome} />
+                        <Route path="/city" component={AsyncCity} />
+                        <Route path="/search/:category/:keywords?" component={AsyncSearch} />
+                        <Route path="/detail/:id" component={AsyncDetail} />
+                        <Route path="/user" component={AsyncUser} />
+                        <Route path="/empty" component={null} key="empty" />
+                        <Route component={AsyncNotFound} />
+                    </Switch>
+                </App>
+            </Router>
+        );
+    }
+}
+```
+> 第二种
+ 在router3中的按需加载方式，route3中实现按需加载只需要按照下面代码的方式实现就可以了
+ ```
+ const about = (location, cb) => {
+    require.ensure([], require => {
+      cb(null, require('../Component/about').default)
+    },'about')
+  }
+  <Route path="helpCenter" getComponent={about} />
+ ```
+**注意**：在router4以前，我们是使用getComponent的的方式来实现按需加载，getComponent是异步的，只有在路由匹配时才会调用,router4中，getComponent方法已经被移除，所以这种方法在router4中不能使用。
+
+## 路由
+[react-router4跟之前版本的变化](https://www.jianshu.com/p/bf6b45ce5bcc)

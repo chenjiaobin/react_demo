@@ -1,3 +1,6 @@
 import React from 'react'
 
-export const ThemeContextTP = React.createContext('blue')
+export const ThemeContextTP = React.createContext({
+  colorT: '#ccc',
+  methodT: () => {}
+})

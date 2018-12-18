@@ -23,10 +23,22 @@ export default class RefText extends Component {
         }
       }))
     }
+    this._methodT = () => {
+      this.setState(state => ({
+        contextTPData: {
+          colorT: 'red',
+          methodT: this._methodT,
+        }
+      }))
+    }
     this.state = {
       contextData: {
         theme: 'green',
         toggleTheme: this.toggleTheme,
+      },
+      contextTPData: {
+        colorT: 'orange',
+        methodT: this._methodT
       }
     }
   }
@@ -52,8 +64,13 @@ export default class RefText extends Component {
           </ThemeContextDy.Consumer>
         </ThemeContextDy.Provider>
 
-        <ThemeContextTP.Provider value="orange">
+        <ThemeContextTP.Provider value={this.state.contextTPData}>
+          {/* 直接在子组件通过comsumer监听父组件传递过去的值，这样做就可以避免如果值需要通过prop一层一层传递到很深的组件去，直接在想要取值的组件使用consumer就可以取到 */}
           <ContextDemo></ContextDemo>
+          <ThemeContextTP.Consumer>
+            {/* 传递了个方法，组件可以通过consumer接收这个方法，然后动态改变这个值 */}
+            {({colorT, methodT}) => <span style={{background: colorT}}>这是父亲自己的</span>}
+          </ThemeContextTP.Consumer>
         </ThemeContextTP.Provider>
       </div>
     )
