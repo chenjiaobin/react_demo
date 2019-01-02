@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link, Switch, NavLink  } from "react-router-dom";
+import Son from './contextDemo/index'
 
 function BasicExample() {
   return (
@@ -22,6 +23,9 @@ function BasicExample() {
           <li>
             <NavLink to="/tonav">navLink测试</NavLink>
           </li>
+          <li>
+            <NavLink to="/context">测试Decorator</NavLink>
+          </li>
         </ul>
         <hr />
         {/* 如果不加这个switch那么但我们访问/about的时候，/:id也会被访问，加了这个switch就有唯一性，加载匹配到的第一个 */}
@@ -30,6 +34,7 @@ function BasicExample() {
           <Route path="/about" component={About} />
           <Route path="/topics" component={Topics} />
           <Route path="/tonav" component={Tonav}/>
+          <Route path="/context" component={Son}></Route>
           <Route path="/:id" component={User}/>
         </Switch>
       </div>

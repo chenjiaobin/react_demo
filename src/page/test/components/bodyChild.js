@@ -1,5 +1,6 @@
 import React from 'react'
 import footerCss from '@/css/footer.css'
+import Son from './contextDemo/index'
 
 export default class BodyChild extends React.Component {
 	constructor (props) {
@@ -34,6 +35,7 @@ export default class BodyChild extends React.Component {
 		}
 		return (
 			<div>
+				<Son></Son>
 				我是body的儿子<input type="text" onChange={this.props.handlerChangeAge}/>
 				<p style={style}>我是父组件通过...props获取过来的数据{this.props.userId} {this.props.country} {this.props.sex}</p>
 				<p style={style2.header}>这是样式测试</p>

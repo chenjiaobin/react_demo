@@ -43,6 +43,7 @@ const autoprefixer = require('autoprefixer')
             plugins: [
               ["import", {libraryName: "antd", style: "css"}],
               'react-html-attrs',// 这个是为了能在react组件中使用class添加样式而不必须使用className
+              "transform-decorators-legacy"
             ] 
         }
       },
