@@ -7,6 +7,11 @@
 	color: orange
 }
 
+/* 上面的写法都是局部样式，只是react默认添加了local，也可以按一下方式写，局部样式会被css-module更换样式名，但是全局样式不会，这也是这两种方式的最大区别
+:local(.all) {
+	color: red
+} */
+ 
 :global(.allArea) {
 	background: gray;
 }

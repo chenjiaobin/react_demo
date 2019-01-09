@@ -19,6 +19,9 @@ function BasicExample() {
           <li>
             <Link to="/user">带参数的url</Link>
           </li>
+          <li>
+          <Link to="/about/me">嵌套路由</Link>
+          </li>
           {/* NavLink测试，和link的区别就是navlink激活会自带一个classname,默认active */}
           <li>
             <NavLink to="/tonav">navLink测试</NavLink>
@@ -50,12 +53,18 @@ function Home() {
   );
 }
 
-function About() {
+function About({ match }) {
   return (
     <div>
-      <h2>About</h2>
+      <h2>About<Route path={`${match.path}/me`} component={Me}></Route></h2>
     </div>
   );
+}
+
+function Me () {
+  return (
+    <div>叫我爸爸</div>
+  )
 }
 
 function Topics({ match }) {

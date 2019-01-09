@@ -43,6 +43,15 @@ console.log(myPath2); //D:\myProgram\test\img\so
 console.log(myPath3); //D:\img\so<br> 
 console.log(myPath4); //D:\myProgram\test\img\so
 ```
+## VScode编辑器配置tab键自动补全标签
+* 按住`ctrl+shift+p`
+* 选择setting.json
+* 添加一下配置就行了
+```
+"emmet.includeLanguages": {
+"javascript": "javascriptreact"
+}
+```
 ## React-redux
 1. react-redux主要工作的两件事就是a.将store传入根组件的context,以便子组件可以用;b通过subscribe订阅store的变化
 2. provider接收从redux而来的store,以便传递给子组件使用
@@ -224,6 +233,33 @@ class RouteMap extends React.Component {
   <Route path="helpCenter" getComponent={about} />
  ```
 **注意**：在router4以前，我们是使用getComponent的的方式来实现按需加载，getComponent是异步的，只有在路由匹配时才会调用,router4中，getComponent方法已经被移除，所以这种方法在router4中不能使用。
+> 第三种
+React 16.6添加了一个新的特性: React.lazy(), 它可以让代码分割(code splitting)更加容易
 
+React.Suspense是一个新添加到核心React库中的功能，t他的功能基本和  react-loadable 一致，所以不用多说，让我们来看看用 React.Suspense 替换 react-loadable
+```
+const johanComponent = React.lazy(() => import(/* webpackChunkName: "johanComponent" */ './myAwesome.js'));
+ 
+export const johanAsyncComponent = props => (
+  <React.Suspense fallback={<Spinner />}>
+    <johanComponent {...props} />
+  </React.Suspense>
+);
+```
+到此，其实我们已经实现了和 react-loadable 一样的功能。或许细心的你可能发现了，React.Suspense 没有 delay 参数。是的， React.Suspense 没有在内置支持 delay 功能，因此，即使加载工程只需要几毫秒的时间， fallback也会被执行，就上述代码来说，也就是 Spinner 会闪烁一下，如果资源被加载得非常快得话。就目前而言，我们需要自己在 fallback 得组件中自行处理这些逻辑，例如在 componentDidMount 中设置一个定时器，使其直到将来的某个时间才呈现
+
+**这里还有一个小问题**
+用户在第一次加在时，会展示"Loading...."的回退方案的组件。这是因为App需要等待浏览器加载好<johanComponent />的代码。
+如果我们想避免展示"Loading...."这样的loading状态，我们需要在提前加载好代码。
+一个简单实现预加载代码的方式就是提前调用React.lazy()
+```
+const stockChartPromise = import("./myAwesome.js");
+const StockChart = React.lazy(() => stockChartPromise);
+```
+当我们调用dynamic imoprt时，组件就会开始加载，并且它不会阻塞其他组件的加载。
+
+* [reactV16.6按需加载](https://juejin.im/post/5c31a45df265da61193bfc7e)
+* [reactV16.6按需加载2](https://cloud.tencent.com/developer/article/1381296)
 ## 路由
 [react-router4跟之前版本的变化](https://www.jianshu.com/p/bf6b45ce5bcc)
+1. v4的版本去掉了<IndexRoute>，新添加了exat
