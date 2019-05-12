@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDom from 'react-dom'
 import BodyChild from './bodyChild.js'
+import PureCom from './pureComponentTest'
 import Reftext from './reftext.js'
 // 这个是es6使用mixin的时候才会用到的
 import ReactMixin from 'react-mixin'
@@ -25,7 +26,8 @@ export default class ComponentBody extends React.Component {
 			name: '刘亦菲',
 			age: 0,
 			arr: [{name:'陈',age:2},{name:'小龙女',age:3}],
-			num: 0
+			num: 0,
+			word: ['陈类似的九分裤']
 		}
 		this.changeName = this.changeName.bind(this)
 		this.test = this.test.bind(this)
@@ -124,6 +126,7 @@ export default class ComponentBody extends React.Component {
 	// 16.3版本引入，新版本还是推荐使用回调形式的refs
 	// 当 ref 属性被用于一个普通的 HTML 元素时，React.createRef() 将接收底层 DOM 元素作为它的 current 属性以创建 ref
 	// 当 ref 属性被用于一个自定义类组件时，ref 对象将接收该组件已挂载的实例作为它的 current
+	// 不能在函数组件上使用ref属性，因为他们没有实例
 	createrefTest () {
 		console.log(this.myref.current)
 	}
@@ -136,6 +139,26 @@ export default class ComponentBody extends React.Component {
 	createrefTest_3 () {
 		console.log(this.fromC)
 	}
+	
+	cc = () => {
+		console.log(this.input.value)
+	}
+
+	// 测试pureComponent数据突变的问题
+	pureComTest = () => {
+		// push一个值然后再设置到state这样是不会更新pureComponet的组件的，因为pureCompoent的prop的新旧值还是一样的，pureComponent这是浅比较（也就是只是比较指针的异同），一下的这个并没有改变指针，所以就不会更新这个味组件
+		// let words = this.state.word
+		// words.push('电视剧啊哈哈')
+		// this.setState({ word: words })
+
+		// 下面通过concat改变了原本的指针
+		this.setState(prev => {
+			return {
+				word: prev.word.concat(['收款单'])
+			}
+		})
+
+	}
 
 	render () {
 		var userName = '张三丰&nbsp;后裔'
@@ -144,6 +167,10 @@ export default class ComponentBody extends React.Component {
 				<div>
 					{/*jsx的注释写法，下面这个danger是为了将userName的&nbsp转换成空格，这个要防止代码注入的问题。也可以通过将空格转换成unicode来进行显示*/}
 					这是<p dangerouslySetInnerHTML = {{__html:userName}}></p>
+					{/* 要编写一个非受控组件，而非为每个状态更新编写事件处理程序，你可以 使用 ref 从 DOM 获取表单值, */}
+					{/* defaultValue这个可以给input，select,textarea设置默认值，defaultChecked可以给checkbox和radio设置默认值 */}
+					<input type="text" defaultValue="测试" ref={(input) => this.input = input} />
+					<p onClick={this.cc}>点击</p>
 
 					<p ref={this.myref}>测试通过16.6.3引入的createRef获取ref</p>
 					<input type="button" value="createRef测试" onClick={this.createrefTest.bind(this)}/>
@@ -152,6 +179,9 @@ export default class ComponentBody extends React.Component {
 					<input type="button" value="回调ref测试" onClick={this.createrefTest_2.bind(this)}/>
 					<Reftext refInput={this.fromChild}></Reftext>
 					<input type="button" value="回调ref测试,父组件获取子组件dom节点" onClick={this.createrefTest_3.bind(this)}/>
+
+					<PureCom word={this.state.word}></PureCom>
+					<p onClick={this.pureComTest}>点我测试pureComponent属性突变的问题</p>
 
 					{/*直接在花口号里面写函数 */}
 					<div>{this.test()}</div>
