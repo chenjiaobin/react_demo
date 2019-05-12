@@ -284,3 +284,10 @@ const StockChart = React.lazy(() => stockChartPromise);
 ## 路由
 [react-router4跟之前版本的变化](https://www.jianshu.com/p/bf6b45ce5bcc)
 1. v4的版本去掉了<IndexRoute>，新添加了exat
+
+## react后续版本
+React 16.x的两大新特性 Time Slicing, Suspense
+React 16.6：支持代码拆分的 Suspense 组件（已经发布）
+React 16.7：React Hooks（~ 2019 年 Q1）
+React 16.8：并发模式（~ 2019 年 Q2）
+React 16.9：支持数据提取的 Suspense 组件（~ 2019 年年中）

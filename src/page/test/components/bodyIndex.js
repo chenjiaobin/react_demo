@@ -2,12 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDom from 'react-dom'
 import BodyChild from './bodyChild.js'
-import PureCom from './pureComponentTest'
+// import PureCom from './pureComponentTest'
 import Reftext from './reftext.js'
 // 这个是es6使用mixin的时候才会用到的
 import ReactMixin from 'react-mixin'
 import mixinLog from './mixin'
 import { Link, Switch, Route } from 'react-router-dom'
+// 通过React.lazy来延迟加载组件，配合React.Suspense使用
+const PureCom = React.lazy(() => import('./pureComponentTest'))
 
 import Home from './home'
 import RouterTest from './goods'
@@ -179,8 +181,10 @@ export default class ComponentBody extends React.Component {
 					<input type="button" value="回调ref测试" onClick={this.createrefTest_2.bind(this)}/>
 					<Reftext refInput={this.fromChild}></Reftext>
 					<input type="button" value="回调ref测试,父组件获取子组件dom节点" onClick={this.createrefTest_3.bind(this)}/>
+					<React.Suspense fallback={<div>Loading...</div>}>
+						<PureCom word={this.state.word}></PureCom>
+					</React.Suspense>
 
-					<PureCom word={this.state.word}></PureCom>
 					<p onClick={this.pureComTest}>点我测试pureComponent属性突变的问题</p>
 
 					{/*直接在花口号里面写函数 */}
