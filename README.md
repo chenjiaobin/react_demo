@@ -285,9 +285,32 @@ const StockChart = React.lazy(() => stockChartPromise);
 [react-router4跟之前版本的变化](https://www.jianshu.com/p/bf6b45ce5bcc)
 1. v4的版本去掉了<IndexRoute>，新添加了exat
 
+
 ## react后续版本
 React 16.x的两大新特性 Time Slicing, Suspense
 React 16.6：支持代码拆分的 Suspense 组件（已经发布）
 React 16.7：React Hooks（~ 2019 年 Q1）
 React 16.8：并发模式（~ 2019 年 Q2）
 React 16.9：支持数据提取的 Suspense 组件（~ 2019 年年中）
+
+## React脚手架
+* 安装create-react-app `npm install -g create-react-app`
+* 启动 `npm start`
+
+1. package.json的react-scripts是create-react-app生成项目所有的依赖。通常情况下，我们创建spa应用时是使用npm安装项目依赖，在通过配置webpack.config.js进行配置，搭建好环境后在src编写源代码。而create-react-app是自动构建，在package.json中只有react-scripts作为依赖，而在reacr-scripts中已经配置好了项目所有需要的,从react，es6，babel,webpack编辑到打包，react-scripts都做了
+
+2. 线上编译命令：这个是create-react-app的一个大亮点，它能让你的应用骗译出在线上生产环境运行的代码，编译出来的文件很小，且文件名还带hash值，方便我们做cache，而且它还提供一个服务器，让我们在本地也能看到线上生产环境类似的效果，真的超级方便
+```
+npm run build
+<!-- 运行下面两条命令，可以查看线上生产环境的运行效果。 -->
+npm install -g pushstate-server
+pushstate-server build
+```
+3. 跨域请求接口时只需要在package.json里面加个配置项`"proxy": "http://localhost:3001/"`
+4. 如果需要修改或者添加额外的webpack配置的话，需要暴露出配置，执行`npm run eject`,这个是不可逆的操作，执行完之后就会在项目里面多出config和scripts两个文件夹，项目里是没有.babelrc这个文件的。所以需要把配置放到 webpack.config.js 或 package.json 的 babel 属性中
+5. 注意使用ant-design这个ui框架的时候，需要单独配置一个css-loader,因为ant不能和css-modules混用，详细请看本项目配置
+
+**注意**： 文档中提到的所有需要修改webpack.config.dev.js的地方都需要同时修改webpack.config.prod.js
+
+6. 项目中的serviceWorker.js文件用来做离线缓存的新的api实现。其工作原理是缓存同源路径下的请求，相当于是在前端与后端数据中加了一个缓存层，使得在离线状态下也能够正常访问部分页面。如果想让registerServiceWorker.js生效，服务器必须采用https协议
+
