@@ -257,7 +257,7 @@ class RouteMap extends React.Component {
 > 第三种
 React 16.6添加了一个新的特性: React.lazy(), 它可以让代码分割(code splitting)更加容易
 
-React.Suspense是一个新添加到核心React库中的功能，t他的功能基本和  react-loadable 一致，所以不用多说，让我们来看看用 React.Suspense 替换 react-loadable
+React.Suspense是一个新添加到核心React库中的功能，他的功能基本和  react-loadable 一致，所以不用多说，让我们来看看用 React.Suspense 替换 react-loadable
 ```
 const johanComponent = React.lazy(() => import(/* webpackChunkName: "johanComponent" */ './myAwesome.js'));
  
@@ -278,7 +278,7 @@ const stockChartPromise = import("./myAwesome.js");
 const StockChart = React.lazy(() => stockChartPromise);
 ```
 当我们调用dynamic imoprt时，组件就会开始加载，并且它不会阻塞其他组件的加载。
-
+注意：React.lazy目前只支持默认导出的组件（export default）
 * [reactV16.6按需加载](https://juejin.im/post/5c31a45df265da61193bfc7e)
 * [reactV16.6按需加载2](https://cloud.tencent.com/developer/article/1381296)
 ## 路由

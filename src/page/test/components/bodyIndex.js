@@ -10,6 +10,8 @@ import mixinLog from './mixin'
 import { Link, Switch, Route } from 'react-router-dom'
 // 通过React.lazy来延迟加载组件，配合React.Suspense使用
 const PureCom = React.lazy(() => import('./pureComponentTest'))
+// 引入错误边界组件,如果这个组件包含的子组件里面报错了，那么不会导致整个运用奔溃，可以通过这个今天错误并渲染出备用UI
+import ErrorBoundary from './errorBoundary.js'
 
 import Home from './home'
 import RouterTest from './goods'
@@ -181,9 +183,11 @@ export default class ComponentBody extends React.Component {
 					<input type="button" value="回调ref测试" onClick={this.createrefTest_2.bind(this)}/>
 					<Reftext refInput={this.fromChild}></Reftext>
 					<input type="button" value="回调ref测试,父组件获取子组件dom节点" onClick={this.createrefTest_3.bind(this)}/>
-					<React.Suspense fallback={<div>Loading...</div>}>
-						<PureCom word={this.state.word}></PureCom>
-					</React.Suspense>
+					<ErrorBoundary>
+						<React.Suspense fallback={<div>Loading...</div>}>
+							<PureCom word={this.state.word}></PureCom>
+						</React.Suspense>
+					</ErrorBoundary>
 
 					<p onClick={this.pureComTest}>点我测试pureComponent属性突变的问题</p>
 
