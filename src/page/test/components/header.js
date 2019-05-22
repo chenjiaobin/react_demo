@@ -19,6 +19,7 @@ export default class ComponentHeader extends React.Component {
 				<ul>
 					<li><Link to="/">首页</Link></li>
 					<li><Link to="/goods/123">测试</Link></li>
+					<li><Link to="/renderProp">RenderProps的应用</Link></li>
 				</ul>
 			<ControlPannel></ControlPannel>
 			<RouterTest></RouterTest>

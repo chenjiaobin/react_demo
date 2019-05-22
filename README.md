@@ -1,8 +1,8 @@
-## 脚手架初始化项目
+## React脚手架
 1. 全局安装脚手架 `npm install -g create-react-app`
 2. 用脚手架初始化项目 `create-react-app react_demo`
 3. 脚手架项目主要依赖 react react-dom  react-scripts
-4. 项目的webpack配置以及项目基本所需依赖都已经在 react-scritps自动安装好了，如果我们需要额外配置webpack配置和依赖，比如配置antd的按需加载，我们可以通过`npm run eject`暴露配置(执行这条命令之前先提交一下你的修改，不然不让你暴露)，这时候就和平时的开发没有区别。也可以使用react-app-rewired(一个对create-react-app进行自定义配置的社区解决方案)和babel-plugin-import(一个babel管理加载的插件)
+4. 项目的webpack配置以及项目基本所需依赖都已经在 react-scritps自动安装好了，如果我们需要额外配置webpack配置和依赖，比如配置antd的按需加载，我们可以通过`npm run eject`暴露配置(执行这条命令之前先提交一下你的修改，不然不让你暴露)，这时候就和平时的开发没有区别。执行完之后就会在项目里面多出config和scripts两个文件夹，项目里是没有.babelrc这个文件的。所以需要把配置放到 webpack.config.js 或 package.json 的 babel 属性中。也可以使用react-app-rewired(一个对create-react-app进行自定义配置的社区解决方案)和babel-plugin-import(一个babel管理加载的插件)
 ```
 npm install react-app-rewired --dev
 npm install babel-plugin-import --dev
@@ -19,6 +19,16 @@ module.exports = function override(config, env) {
   return config;
 }
 ```
+5. 线上编译命令：这个是create-react-app的一个大亮点，它能让你的应用骗译出在线上生产环境运行的代码，编译出来的文件很小，且文件名还带hash值，方便我们做cache，而且它还提供一个服务器，让我们在本地也能看到线上生产环境类似的效果，真的超级方便
+```
+npm run build
+<!-- 运行下面两条命令，可以查看线上生产环境的运行效果。 -->
+npm install -g pushstate-server
+pushstate-server build
+```
+6. 跨域请求接口时只需要在package.json里面加个配置项` "proxy": "http://localhost:3001/" `
+7. 注意使用ant-design这个ui框架的时候，需要单独配置一个css-loader,因为ant不能和css-modules混用，详细请看本项目`build/webpack.config.js`配置
+8. 项目中的serviceWorker.js文件用来做离线缓存的新的api实现。其工作原理是缓存同源路径下的请求，相当于是在前端与后端数据中加了一个缓存层，使得在离线状态下也能够正常访问部分页面。如果想让registerServiceWorker.js生效，服务器必须采用https协议
 
 ## 安装依赖
 npm install
@@ -114,7 +124,7 @@ class IgnoreFirstChild extends React.Component {
 ### 新增两个
 * static getDerivedStateFromProps
 会在初始化和update触发，用于替换componentWillReceiveProps,可以用来控制props更新state的过程，它返回一个对象便是新的state,如果不需要更新，返回null
-* getSnapshotBeforeUpdate 用于替换componentWillUpdate,改函数会在update后DOM更新前被调用，用于读取最新的DOM数据，返回值将作为componentDidUpdate的第三个参数
+* getSnapshotBeforeUpdate 用于替换componentWillUpdate,改函数会在update后DOM更新前被调用，它使得组件能在发生更改之前从 DOM 中捕获一些信息（例如，滚动位置），返回值将作为componentDidUpdate的第三个参数
 ```
 class A extends React.Component {
   // 用于初始化 state
@@ -136,7 +146,7 @@ class A extends React.Component {
   // 组件销毁后调用
   componentDidUnMount() {}
   // 组件更新后调用
-  componentDidUpdate() {}
+  componentDidUpdate(prevProps, prevState, snapshot) {}
   // 渲染组件函数
   render() {}
   // 以下函数不建议使用
@@ -285,6 +295,32 @@ const StockChart = React.lazy(() => stockChartPromise);
 [react-router4跟之前版本的变化](https://www.jianshu.com/p/bf6b45ce5bcc)
 1. v4的版本去掉了<IndexRoute>，新添加了exat
 
+## 高阶组件HOC
+1. 不要在Render中使用HOC，React 的 diff 算法（称为协调）使用组件标识来确定它是应该更新现有子树还是将其丢弃并挂载新子树。 如果从 render 返回的组件与前一个渲染中的组件相同（===），则 React 通过将子树与新子树进行区分来递归更新子树。 如果它们不相等，则完全卸载前一个子树
+```
+// 这种做法是不可行的，这不仅仅是性能问题 - 重新挂载组件会导致该组件及其所有子组件的状态丢失
+render() {
+  // 每次调用 render 函数都会创建一个新的 EnhancedComponent
+  // EnhancedComponent1 !== EnhancedComponent2
+  const EnhancedComponent = enhance(MyComponent);
+  // 这将导致子树每次渲染都会进行卸载，和重新挂载的操作！
+  return <EnhancedComponent />;
+}
+```
+在极少数情况下，你需要动态调用 HOC。你可以在组件的生命周期方法或其构造函数中进行调用
+2. 不要改变原始组件，使用组合方式替换，详情见[官网](https://react.docschina.org/docs/higher-order-components.html)
+
+## 好用，但不常用之API
+* [React.memo](https://react.docschina.org/docs/react-api.html)，它与 React.PureComponent 非常相似，但它适用于函数组件，但不适用于 class 组件
+
+## HOOK（v16.8才开始支持）
+> 什么是HOOK
+
+Hook 是一些可以让你在函数组件里“钩入” React state 及生命周期等特性的函数。Hook 不能在 class 组件中使用 —— 这使得你不使用 class 也能使用 React
+> 什么时候使用HOOK
+如果你在编写函数组件并意识到需要向其添加一些 state，以前的做法是必须将其它转化为 class。现在你可以在现有的函数组件中使用 Hook。
+
+前言及注意：使用的话需要升级React相关的库的版本(React、react-dom等)，只能在函数里面使用，不可在class里面使用，将原本class的一些周期函数封装成API，可以用HOOK取代class，但是官网也建议先不要替换，还有部分暂时无法替代的，比如暂时还没有对应不常用的`getSnapshotBeforeUpdate` 和` componentDidCatch` 生命周期的 Hook 等价写法,目前 Hook 还处于早期阶段，一些第三方的库可能还暂时无法兼容 Hook
 
 ## react后续版本
 React 16.x的两大新特性 Time Slicing, Suspense
@@ -292,25 +328,4 @@ React 16.6：支持代码拆分的 Suspense 组件（已经发布）
 React 16.7：React Hooks（~ 2019 年 Q1）
 React 16.8：并发模式（~ 2019 年 Q2）
 React 16.9：支持数据提取的 Suspense 组件（~ 2019 年年中）
-
-## React脚手架
-* 安装create-react-app `npm install -g create-react-app`
-* 启动 `npm start`
-
-1. package.json的react-scripts是create-react-app生成项目所有的依赖。通常情况下，我们创建spa应用时是使用npm安装项目依赖，在通过配置webpack.config.js进行配置，搭建好环境后在src编写源代码。而create-react-app是自动构建，在package.json中只有react-scripts作为依赖，而在reacr-scripts中已经配置好了项目所有需要的,从react，es6，babel,webpack编辑到打包，react-scripts都做了
-
-2. 线上编译命令：这个是create-react-app的一个大亮点，它能让你的应用骗译出在线上生产环境运行的代码，编译出来的文件很小，且文件名还带hash值，方便我们做cache，而且它还提供一个服务器，让我们在本地也能看到线上生产环境类似的效果，真的超级方便
-```
-npm run build
-<!-- 运行下面两条命令，可以查看线上生产环境的运行效果。 -->
-npm install -g pushstate-server
-pushstate-server build
-```
-3. 跨域请求接口时只需要在package.json里面加个配置项`"proxy": "http://localhost:3001/"`
-4. 如果需要修改或者添加额外的webpack配置的话，需要暴露出配置，执行`npm run eject`,这个是不可逆的操作，执行完之后就会在项目里面多出config和scripts两个文件夹，项目里是没有.babelrc这个文件的。所以需要把配置放到 webpack.config.js 或 package.json 的 babel 属性中
-5. 注意使用ant-design这个ui框架的时候，需要单独配置一个css-loader,因为ant不能和css-modules混用，详细请看本项目配置
-
-**注意**： 文档中提到的所有需要修改webpack.config.dev.js的地方都需要同时修改webpack.config.prod.js
-
-6. 项目中的serviceWorker.js文件用来做离线缓存的新的api实现。其工作原理是缓存同源路径下的请求，相当于是在前端与后端数据中加了一个缓存层，使得在离线状态下也能够正常访问部分页面。如果想让registerServiceWorker.js生效，服务器必须采用https协议
 

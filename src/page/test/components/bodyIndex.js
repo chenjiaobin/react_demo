@@ -8,13 +8,14 @@ import Reftext from './reftext.js'
 import ReactMixin from 'react-mixin'
 import mixinLog from './mixin'
 import { Link, Switch, Route } from 'react-router-dom'
-// 通过React.lazy来延迟加载组件，配合React.Suspense使用
+// 通过React.lazy来延迟加载组件，配合React.Suspense使用，允许你定义一个动态加载的组件。这有助于缩减 bundle 的体积，并延迟加载在初次渲染时未用到的组件
 const PureCom = React.lazy(() => import('./pureComponentTest'))
 // 引入错误边界组件,如果这个组件包含的子组件里面报错了，那么不会导致整个运用奔溃，可以通过这个今天错误并渲染出备用UI
 import ErrorBoundary from './errorBoundary.js'
 
 import Home from './home'
 import RouterTest from './goods'
+import RenderProp from './renderProps/test.js'
 import footerCss from '@/css/footer.css'
 
 export default class ComponentBody extends React.Component {
@@ -216,6 +217,7 @@ export default class ComponentBody extends React.Component {
 						<Switch>
 							<Route component={Home} exact path='/'></Route>
 							<Route component={RouterTest} path="/goods/:id"></Route>
+							<Route component={RenderProp} path="/renderProp"></Route>
 						</Switch>
 					</div>
 				</div>
