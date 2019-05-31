@@ -11,3 +11,6 @@ react-router-dom其实一些API也只是从react-router中导入组件，然后�
 * 使用：`import {Swtich, Route, Router, HashHistory, Link} from 'react-router-dom';`
 
 注意：路由跳转正常，但是刷新就404，找不到页面，是因为文档中提到了使用browserHistory时，会创建真实的URL，处理初始/请求没有问题，但是对于跳转路由后，刷新页面或者直接访问该URL时，会发现无法正确相应，解决方法（http://react-guide.github.io/react-router-cn/docs/guides/basics/Histories.html ）（ https://www.jb51.net/article/131789.htm ）
+
+重要的提示：Hash history不支持location.key或location.state。在以前的版本中，我们试图减少行为，但是有一些边缘案例我们无法解决。
+任何需要此行为的代码或插件将无法正常工作。由于此技术仅用于支持旧版浏览器，因此我们建议您将服务器配置为使用<BrowserHistory>
