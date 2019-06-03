@@ -4,7 +4,7 @@ import { Increment, Decrement } from '../Action/index'
  * state是旧的state，也就是改变之前的state值
  * action也是旧的action
  */
-export default (state, action) => {
+export default (state = {}, action) => {
     console.log(state)
     console.log(action)
     const { counterCaption } = action

@@ -14,3 +14,9 @@ react-router-dom其实一些API也只是从react-router中导入组件，然后�
 
 重要的提示：Hash history不支持location.key或location.state。在以前的版本中，我们试图减少行为，但是有一些边缘案例我们无法解决。
 任何需要此行为的代码或插件将无法正常工作。由于此技术仅用于支持旧版浏览器，因此我们建议您将服务器配置为使用<BrowserHistory>
+
+### API
+`withRouter`：是专门用来处理数据更新问题的，在使用redux的connect()或者mobx的inject()的组件中，如果依赖路由的更新需要重新渲染，会出现路由更新了但是组件没有重新渲染的问题，这是因为redux和mobx的这些连接方法会修改组件的的shouldComponentUpdate,用withRouter可以解决这种问题
+> mobX是flux的后起之秀，也是前端数据流（flux、redux、mobX、Vuex）中的一种，mobx则更加简洁, 更符合对store 增删改查的操作概念（ https://cn.mobx.js.org/ ）
+
+默认情况下必须是经过路由匹配渲染的组件才存在this.props，才拥有路由参数，才能使用编程式导航的写法，执行`this.props.history.push('/detail')`跳转到对应路由的页面，然而不是所有组件都直接（直接地址栏输入地址）与路由相连（通过路由跳转到此组件）的，当这些组件需要路由参数时，使用withRouter就可以给此组件传入路由参数，此时就可以使用this.props

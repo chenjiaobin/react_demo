@@ -1,8 +1,10 @@
 import React from 'react'
 import { increment, decrement } from '@/Redux/Action/index'
+import { REDUCER_1, REDUCER_2 } from '@/Redux/Store/store'
+import { multiply } from '@/Redux/Action/action_2'
 import { connect } from 'react-redux'
 
-function Counter ({caption, Increment, Decrement, value}) {
+function Counter ({caption, Increment, Decrement, Multiply, value, name}) {
   return (
     <div>
       <button onClick={Increment}>
@@ -11,7 +13,10 @@ function Counter ({caption, Increment, Decrement, value}) {
       <button onClick={Decrement}>
         -
       </button>
-      <span>{caption}{value}</span>
+      <button onClick={Multiply}>
+        显示我的名字
+      </button>
+      <span>{caption}{value}</span><span>{name}</span>
     </div>
   )
 }
@@ -43,7 +48,8 @@ function Counter ({caption, Increment, Decrement, value}) {
 
 function mapState (state, ownProps) {
   return {
-    value: state[ownProps.caption]
+    value: state[REDUCER_1][ownProps.caption],
+    name: state[REDUCER_2]
   }
 }
 
@@ -54,6 +60,9 @@ function mapDispath (dispath, ownProps) {
     },
     Decrement: () => {
       dispath(decrement(ownProps.caption))
+    },
+    Multiply: () => {
+      dispath(multiply('chinese'))
     }
   }
 }

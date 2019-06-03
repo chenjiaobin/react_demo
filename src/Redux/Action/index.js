@@ -1,5 +1,5 @@
 export const Increment = 'increment'
-export const Decrement = 'Decrement'
+export const Decrement = 'decrement'
 
 export const increment = (counterCaption) => {
     return {
