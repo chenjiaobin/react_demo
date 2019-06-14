@@ -2,22 +2,28 @@
 1. 全局安装脚手架 `npm install -g create-react-app`
 2. 用脚手架初始化项目 `create-react-app react_demo`
 3. 脚手架项目主要依赖 react react-dom  react-scripts
-4. 项目的webpack配置以及项目基本所需依赖都已经在 react-scritps自动安装好了，如果我们需要额外配置webpack配置和依赖，比如配置antd的按需加载，我们可以通过`npm run eject`暴露配置(执行这条命令之前先提交一下你的修改，不然不让你暴露)，这时候就和平时的开发没有区别。执行完之后就会在项目里面多出config和scripts两个文件夹，项目里是没有.babelrc这个文件的。所以需要把配置放到 webpack.config.js 或 package.json 的 babel 属性中。也可以使用react-app-rewired(一个对create-react-app进行自定义配置的社区解决方案)和babel-plugin-import(一个babel管理加载的插件)
+4. 项目的webpack配置以及项目基本所需依赖都已经在 react-scritps自动安装好了，如果我们需要额外配置webpack配置和依赖，比如配置antd的按需加载，我们可以通过`npm run eject`暴露配置(执行这条命令之前先提交一下你的修改，不然不让你暴露)，这时候就和平时的开发没有区别。执行完之后就会在项目里面多出config和scripts两个文件夹，项目里是没有.babelrc这个文件的。所以需要把配置放到 webpack.config.js 或 package.json 的 babel 属性中。也可以使用react-app-rewired(一个对create-react-app进行自定义配置的社区解决方案)和babel-plugin-import(一个用于按需加载组件代码和样式的babel插件)，由于新的 react-app-rewired@2.x 版本的关系，你还需要安装 customize-cra
 ```
 npm install react-app-rewired --dev
+npm install customize-cra
 npm install babel-plugin-import --dev
+
 // 修改package.json的配置
 "scripts": {
   "start": "react-app-rewired start",
   "build": "react-app-rewired build",
   "test": "react-app-rewired test --env=jsdom",
 }
+
 // 在项目根目录创建一个 config-overrides.js 用于修改默认配置
-const { injectBabelPlugin } = require('react-app-rewired');
-module.exports = function override(config, env) {
-  config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }], config);
-  return config;
-}
+const { override, fixBabelImports } = require('customize-cra')
+module.exports = override(
+   fixBabelImports('import', {
+     libraryName: 'antd',
+     libraryDirectory: 'es',
+     style: 'css',
+   }),
+ );
 ```
 5. 线上编译命令：这个是create-react-app的一个大亮点，它能让你的应用骗译出在线上生产环境运行的代码，编译出来的文件很小，且文件名还带hash值，方便我们做cache，而且它还提供一个服务器，让我们在本地也能看到线上生产环境类似的效果，真的超级方便
 ```

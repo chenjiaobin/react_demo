@@ -107,6 +107,10 @@ const autoprefixer = require('autoprefixer')
     ]
   },
   plugins: [
+    new webpack.ContextReplacementPlugin(
+      /moment[\\\/]locale$/,
+      /(zh-cn)\.js/
+    )
     // 在下面已经添加了多页面打包
   	// new HtmlWebpackPlugin({
     //     filename: "index.html",

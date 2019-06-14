@@ -1,6 +1,12 @@
-import {createStore, combineReducers} from 'redux'
+import {createStore, combineReducers, applyMiddleware } from 'redux'
 import reducer1 from '../Reducer/index'
 import reducer2 from '../Reducer/reducer_2'
+
+// 使用middleware中间件
+// import thunkMiddleware from 'redux-thunk'
+// import { createLogger } from 'redux-logger'
+// let loggerMidderleware = createLogger()
+
 // 下面这些变量可以统一写在一个文件好一点，我这里就简单写在这里了
 export const REDUCER_1 = 'num_1'
 export const REDUCER_2 = 'num_2'
@@ -41,5 +47,10 @@ var reducer = combineReducers({
 
 
 const store = createStore(reducer, initState)
+// const store = createStore(
+//     reducer,
+//     initState,
+//     applyMiddleware(thunkMiddleware, loggerMiddleware)
+//     )
 
 export default store

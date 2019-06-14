@@ -70,7 +70,7 @@ function mapDispath (dispath, ownProps) {
  * connect（参数的顺序不要颠倒了）
  * 第一个参数将store中的数据作为props绑定到组件上面
  * 第二个参数将action作为props绑定到组件上面
- * 第三个参数用于自定义merge流程，将stateProps 和 dispatchProps merge 到parentProps之后赋给组件。通常情况下，你可以不传这个参数，connect会使用 Object.assign。
+ * 第三个参数用于自定义merge流程，mapStateToProps() 与 mapDispatchToProps() 的执行结果和组件自身的 props 将传入到这个回调函数中, 传递到被包装组件当中。通常情况下，你可以不传这个参数，如果你省略这个参数，默认情况下返回 Object.assign({}, ownProps, stateProps, dispatchProps)。
  * 第四个参数如果指定这个参数，可以定制 connector 的行为。一般不用。
  */
 export default connect(mapState, mapDispath)(Counter)
