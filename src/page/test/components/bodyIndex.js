@@ -177,7 +177,7 @@ export default class ComponentBody extends React.Component {
 					<input type="text" defaultValue="测试" ref={(input) => this.input = input} />
 					<p onClick={this.cc}>点击</p>
 
-					<p ref={this.myref}>测试通过16.6.3引入的createRef获取ref</p>
+					<p ref={this.myref} className="chenjiaobin">测试通过16.6.3引入的createRef获取ref</p>
 					<input type="button" value="createRef测试" onClick={this.createrefTest.bind(this)}/>
 
 					<p ref={this.setTextInputRef}>回调ref的使用</p>
