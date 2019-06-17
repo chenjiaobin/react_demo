@@ -75,4 +75,5 @@ function appReducer(state = initialState, action) {
     };
 }
 ```
-### Redux源码
+## Redux和react-redux
+`概念（https://segmentfault.com/a/1190000007642740）`

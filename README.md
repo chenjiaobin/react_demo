@@ -368,7 +368,7 @@ useEffect(() => {
 `useContext`：接收一个 context 对象（React.createContext 的返回值）并返回该 context 的当前值。当前的 context 值由上层组件中距离当前组件最近的 <MyContext.Provider> 的 value prop 决定
 
 ## Vue vs React
-
+请打开此链接（https://raw.githubusercontent.com/chenjiaobin/react_demo/master/static/VuevsReact.png）
 
 ## react后续版本
 React 16.x的两大新特性 Time Slicing, Suspense

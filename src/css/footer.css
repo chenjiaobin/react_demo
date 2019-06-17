@@ -15,3 +15,13 @@
 :global(.allArea) {
 	background: gray;
 }
+
+/* 建议可以使用less写方便点 */
+/* :global {
+	.allRrea {
+
+	}
+	.err {
+
+	}
+} */
