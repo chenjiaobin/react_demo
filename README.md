@@ -134,7 +134,10 @@ class IgnoreFirstChild extends React.Component {
 ```
 class A extends React.Component {
   // 用于初始化 state
-  constructor() {}
+  constructor(props) {
+    // 有constructor就必须写super(),如果constructor里面有用到this.props的话就需要super(props),没有的话可以不写props，其他生命周期函数默认有         porps
+    super(props)
+  }
   // 用于替换 `componentWillReceiveProps` ，该函数会在初始化和 `update` 时被调用
   // 因为该函数是静态函数，所以取不到 `this`
   // 如果需要对比 `prevProps` 需要单独在 `state` 中维护
