@@ -35,7 +35,7 @@
     "react-router-dom": "^4.3.1",
     "style-loader": "^0.21.0",
     "webpack": "^4.10.2",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.11"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
