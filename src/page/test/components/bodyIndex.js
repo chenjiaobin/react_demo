@@ -60,18 +60,14 @@ export default class ComponentBody extends React.Component {
 	// 	userId: PropTypes.number.isRequired
 	// }
 
-	componentWillMount() {
-		console.log('componentWillMount');
-	}
-
-	componentDidMount() {
-		console.log('componentDidMount')
-	}
+	// 新版本已废除
+	// componentWillMount() {
+	// 	console.log('componentWillMount');
+	// }
 
 	// onClick事件的测试
 	changeName () {
 		// this.setState({name: '小龙女'})
-		console.log('sedfsad')
 		this.setState((pre, prop) => {
 			console.log('酒店开发接口对接')
 			console.log(pre)
@@ -164,6 +160,12 @@ export default class ComponentBody extends React.Component {
 		})
 
 	}
+
+	// componentDidUpdate (preProps, preState) {
+	// 	if (preState.name !== this.state.name) {
+
+	// 	}
+	// }
 
 	render () {
 		var userName = '张三丰&nbsp;后裔'
