@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import useSelf from './useSelf'
+import Hook2 from './useReducer'
 
 function Hook () {
   // 注：新的state和旧的state不会合并
@@ -37,6 +38,7 @@ function Hook () {
   return (
     <div>
       <div>
+        <h3>useState和useEffect测试</h3>
         <p>count数字是：{count}</p>
         <button onClick={ () => {setCount(count + 1)} }>加法count</button>
         <p>age数字是：{age}</p>
@@ -45,6 +47,7 @@ function Hook () {
         <input type="text" onChange={nameChange}/>
         <p>上一次的prop值：{preCount}</p>
       </div>
+      <Hook2></Hook2>
     </div>
   )
 }

@@ -22,6 +22,7 @@ class Index extends React.Component {
 						<li><Link to="/home_2">首页2</Link></li>
 					</ul>
 					<Switch>
+						<Route exact component={ Home } path="/"></Route>
 						<Route component={ Home } path="/home_1"></Route>
 						<Route component={ Hook } path="/home_2"></Route>
 					</Switch>
