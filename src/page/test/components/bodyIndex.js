@@ -17,6 +17,7 @@ import Home from './home'
 import RouterTest from './goods'
 import RenderProp from './renderProps/test.js'
 import footerCss from '@/css/footer.css'
+import MyContext from './contextDemo/contextType/index'
 
 export default class ComponentBody extends React.Component {
 
@@ -167,6 +168,16 @@ export default class ComponentBody extends React.Component {
 	// 	}
 	// }
 
+	// shouldComponentUpdate(nextProps, nextState) {
+  //   if (this.props.color !== nextProps.color) {
+  //     return true;
+  //   }
+  //   if (this.state.count !== nextState.count) {
+  //     return true;
+  //   }
+  //   return false;
+	// }
+
 	render () {
 		var userName = '张三丰&nbsp;后裔'
 
@@ -213,6 +224,7 @@ export default class ComponentBody extends React.Component {
 					<div>{this.state.num}</div>
 					<button onClick={this.add.bind(this)}>测试setState</button>
 					<p className={footerCss.minFooter}>我是局部样式</p>
+					<MyContext></MyContext>
 					<div>
 						{/* 这个是因为我在footer.css添加了全局样式global，所以可以直接这样用，因为css-module不会去改变样式的名字，如果不加global默认是local，那么只能按照上面那种方式去使用 */}
 						<h1 className="allArea">路由测试</h1>
