@@ -18,6 +18,7 @@ import RouterTest from './goods'
 import RenderProp from './renderProps/test.js'
 import footerCss from '@/css/footer.css'
 import MyContext from './contextDemo/contextType/index'
+import Portal from './portal'
 
 export default class ComponentBody extends React.Component {
 
@@ -37,7 +38,7 @@ export default class ComponentBody extends React.Component {
 		}
 		this.changeName = this.changeName.bind(this)
 		this.test = this.test.bind(this)
-		// createRef试用
+		// createRef试用，react原始节点获取到的就是dom字符串，如果是组件的获取到的就是实例。可以结合使用React.forwardRef来获取子组件的dom节点
 		this.myref = React.createRef()
 		// 回调ref的试用
 		this.textInput = null
@@ -116,6 +117,17 @@ export default class ComponentBody extends React.Component {
 		console.log(domTemp)
 	}
 
+	// 获取子组件节点的好方式，React 会将 <FancyButton ref={ref}> 元素的 ref 作为第二个参数传递给 React.forwardRef 函数中的渲染函数。该渲染函数会将 ref 传递给 <button ref={ref}> 元素
+	// const FancyButton = React.forwardRef((props, ref) => (
+	// 	<button ref={ref} className="FancyButton">
+	// 		{props.children}
+	// 	</button>
+	// ));
+	
+	// // You can now get a ref directly to the DOM button:
+	// const ref = React.createRef();
+	// <FancyButton ref={ref}>Click me!</FancyButton>;
+
 	// 这个是给子组件调用的事件，这样就实现了子组件修改父组件的变量,实现了双向绑定
 	handlerChangeAge (event) {
 		this.setState({age: event.target.value})
@@ -178,6 +190,16 @@ export default class ComponentBody extends React.Component {
   //   return false;
 	// }
 
+	// 第一次加载不会执行，以后更新只要shouldComponentUpdate返回true就会执行
+	// 注意：里面的操作必须包裹在一个条件语句里面，要不然可能会导致死循环
+	// 如果有使用getSnapshotBeforeUpdate，那么会吧这个返回的座位compondntDidUpdate的第三个参数
+	// componentDidUpdate(prevProps, prevState) {
+	// 	// 典型用法（不要忘记比较 props）：
+	// 	if (this.props.userID !== prevProps.userID) {
+	// 		this.fetchData(this.props.userID);
+	// 	}
+	// }
+
 	render () {
 		var userName = '张三丰&nbsp;后裔'
 
@@ -225,6 +247,9 @@ export default class ComponentBody extends React.Component {
 					<button onClick={this.add.bind(this)}>测试setState</button>
 					<p className={footerCss.minFooter}>我是局部样式</p>
 					<MyContext></MyContext>
+					<Portal>
+						<div>的扩散和</div>
+					</Portal>
 					<div>
 						{/* 这个是因为我在footer.css添加了全局样式global，所以可以直接这样用，因为css-module不会去改变样式的名字，如果不加global默认是local，那么只能按照上面那种方式去使用 */}
 						<h1 className="allArea">路由测试</h1>
