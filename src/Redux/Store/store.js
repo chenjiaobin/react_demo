@@ -47,10 +47,13 @@ var reducer = combineReducers({
 
 
 const store = createStore(reducer, initState)
+// 第二个参数(初始化数据是可选的)
 // const store = createStore(
 //     reducer,
 //     initState,
 //     applyMiddleware(thunkMiddleware, loggerMiddleware)
 //     )
+
+// const store = createStore(reducer, applyMiddleware(thunk))
 
 export default store
